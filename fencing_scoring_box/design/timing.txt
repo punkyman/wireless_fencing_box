@@ -1,0 +1,21 @@
+Foil
+=====
+Depress 14ms (+/-1ms)
+Lockout 300ms (+/-25ms tolerance)
+No touch is registered on the piste
+
+
+Epee
+=====
+Register when the circuit is closed.
+Lockout 45ms (+/-5ms).
+Depress >2ms
+Not register a touch on the piste or gaurd
+
+
+Sabre
+======
+Lockout 120ms +/-10ms
+Depress (touch length) 0.1ms -1ms
+Whipover, bloody complex!
+
