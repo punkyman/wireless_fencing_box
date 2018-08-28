@@ -26,14 +26,16 @@
 /*-----( Declare Constants and Pin Numbers )-----*/
 
 
-#define CE_PIN   14
-#define CSN_PIN 13
+#define CE_PIN   9
+#define CSN_PIN 10
 
-#define ID_PIN 12
+#define ID_PIN 8
 
 // NOTE: the "LL" at the end of the constant is "LongLong" type
 const uint64_t pipe_left = 0x0000DEADBEEF; // Define the transmit pipe
 const uint64_t pipe_right = 0x0000BEEFDEAD; // Define the transmit pipe
+
+int value;
 
 bool is_left = false;
 
@@ -45,33 +47,37 @@ int joystick[2];  // 2 element array holding Joystick readings
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
   Serial.begin(9600);
-  pinMode(ID_PIN,INPUT);
+  pinMode(ID_PIN,INPUT_PULLUP);
   delay(1000);
   
   
   Serial.println("Nrf24L01 Receiver Starting");
   radio.begin();
   
-  if(digitalRead(ID_PIN) > 512)
+  if(digitalRead(ID_PIN) == LOW)
   {
 	  is_left = true;
 		radio.openWritingPipe(pipe_left);
+    Serial.println("Setup as left");
+   value = 1;
   }
 	else
+  {
 		radio.openWritingPipe(pipe_right);
+    Serial.println("Setup as right");
+    value = 2;
+  }
 }//--(end setup )---
 
 
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
-	int value;
-	
-	if(is_left)
-		value = 1;
-	else
-		value = 2;
-	
+   Serial.write("sending value : ");
+   Serial.write(value);
+   Serial.write("\n");
+   
 	radio.write(&value, sizeof(value));
+  delay(500);
 }//--(end main loop )---
 
 /*-----( Declare User-written Functions )-----*/
