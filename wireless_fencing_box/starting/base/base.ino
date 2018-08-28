@@ -23,15 +23,15 @@
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
-/*-----( Declare Constants and Pin Numbers )-----*/
 
+// NOTE: the "LL" at the end of the constant is "LongLong" type
+const uint64_t pipe_left = 0xDEADBEEF; // Define the transmit pipe
+const uint64_t pipe_right = 0xBEEFDEAD; // Define the transmit pipe
+
+/*-----( Declare Constants and Pin Numbers )-----*/
 
 #define CE_PIN  9
 #define CSN_PIN 10
-
-// NOTE: the "LL" at the end of the constant is "LongLong" type
-const uint64_t pipe_left = 0x0000DEADBEEF; // Define the transmit pipe
-const uint64_t pipe_right = 0x0000BEEFDEAD; // Define the transmit pipe
 
 /*-----( Declare objects )-----*/
 RF24 radio(CE_PIN, CSN_PIN); // Create a Radio
@@ -45,7 +45,7 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   radio.begin();
 
   radio.openReadingPipe(1, pipe_left);
-  radio.openReadingPipe(2, pipe_right);
+  //radio.openReadingPipe(2, pipe_right);
 
   radio.startListening();
 }//--(end setup )---
@@ -54,16 +54,16 @@ void setup()   /****** SETUP: RUNS ONCE ******/
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
     uint8_t pipe;
-    int value=666;
-	if(radio.available(&pipe))
+    int value;
+    
+	  if(radio.available(&pipe))
     {
       bool result = radio.read(&value, sizeof(value));
-      if(pipe == 1)
-        Serial.write("received from left :");
+      /*if(pipe == 1)
+        Serial.print("received from left :");
        else if(pipe == 2)
-        Serial.write("received from right :");
-      if(result) Serial.write(value);
-      Serial.write("\n");
+        Serial.print("received from right :");*/
+      Serial.println(value);
     }
 }//--(end main loop )---
 

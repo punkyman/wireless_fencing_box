@@ -32,15 +32,12 @@
 #define ID_PIN 8
 
 // NOTE: the "LL" at the end of the constant is "LongLong" type
-const uint64_t pipe_left = 0x0000DEADBEEF; // Define the transmit pipe
-const uint64_t pipe_right = 0x0000BEEFDEAD; // Define the transmit pipe
+const uint64_t pipe_left = 0xDEADBEEF; // Define the transmit pipe
+const uint64_t pipe_right = 0xBEEFDEAD; // Define the transmit pipe
 
 int sender_id;
 
-/*-----( Declare objects )-----*/
 RF24 radio(CE_PIN, CSN_PIN); // Create a Radio
-/*-----( Declare Variables )-----*/
-int joystick[2];  // 2 element array holding Joystick readings
 
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
@@ -50,6 +47,7 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   
   
   Serial.println("Nrf24L01 Receiver Starting");
+  
   radio.begin();
   
   if(digitalRead(ID_PIN) == LOW)
@@ -68,11 +66,12 @@ void setup()   /****** SETUP: RUNS ONCE ******/
 
 
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
-{
-   Serial.print("sending value : ");
+{   
+	if(radio.write(&sender_id, sizeof(int)))
+  {
+   Serial.print("sent value : ");
    Serial.println(sender_id);
-   
-	radio.write(&sender_id, sizeof(sender_id));
+  }
   delay(500);
 }//--(end main loop )---
 
