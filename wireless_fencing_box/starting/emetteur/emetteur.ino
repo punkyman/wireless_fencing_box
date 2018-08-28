@@ -35,9 +35,7 @@
 const uint64_t pipe_left = 0x0000DEADBEEF; // Define the transmit pipe
 const uint64_t pipe_right = 0x0000BEEFDEAD; // Define the transmit pipe
 
-int value;
-
-bool is_left = false;
+int sender_id;
 
 /*-----( Declare objects )-----*/
 RF24 radio(CE_PIN, CSN_PIN); // Create a Radio
@@ -56,27 +54,25 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   
   if(digitalRead(ID_PIN) == LOW)
   {
-	  is_left = true;
 		radio.openWritingPipe(pipe_left);
     Serial.println("Setup as left");
-   value = 1;
+    sender_id = 1;
   }
 	else
   {
 		radio.openWritingPipe(pipe_right);
     Serial.println("Setup as right");
-    value = 2;
+    sender_id = 2;
   }
 }//--(end setup )---
 
 
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
-   Serial.write("sending value : ");
-   Serial.write(value);
-   Serial.write("\n");
+   Serial.print("sending value : ");
+   Serial.println(sender_id);
    
-	radio.write(&value, sizeof(value));
+	radio.write(&sender_id, sizeof(sender_id));
   delay(500);
 }//--(end main loop )---
 
