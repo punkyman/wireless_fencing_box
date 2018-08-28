@@ -26,7 +26,7 @@
 /*-----( Declare Constants and Pin Numbers )-----*/
 
 
-#define CE_PIN  10
+#define CE_PIN  9
 #define CSN_PIN 10
 
 // NOTE: the "LL" at the end of the constant is "LongLong" type
