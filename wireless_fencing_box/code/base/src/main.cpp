@@ -24,9 +24,7 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
-// NOTE: the "LL" at the end of the constant is "LongLong" type
-const uint64_t pipe_left = 0xDEADBEEF; // Define the transmit pipe
-const uint64_t pipe_right = 0xBEEFDEAD; // Define the transmit pipe
+#include "../../Common/defines.h"
 
 /*-----( Declare Constants and Pin Numbers )-----*/
 
@@ -44,10 +42,12 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   Serial.println("Nrf24L01 Receiver Starting");
   radio.begin();
 
-  radio.openReadingPipe(1, pipe_left);
-  //radio.openReadingPipe(2, pipe_right);
+  //radio.openReadingPipe(1, pipe_left);
+  radio.openReadingPipe(2, pipe_right);
 
   radio.startListening();
+
+  Serial.println("Waiting for clients");
 }//--(end setup )---
 
 
